@@ -3,10 +3,18 @@ package com.company.division.view;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Data
-public class CustomerDetails {
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
+public class CustomerInfo {
 
 	@NotBlank
 	private String username;
