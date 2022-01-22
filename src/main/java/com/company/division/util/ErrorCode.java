@@ -2,7 +2,7 @@ package com.company.division.util;
 
 public enum ErrorCode {
 	INVALID_PAYLOAD("Unsupported"),
-	INVALID_COUNTRY("Not allowed to create from given location."), 
+	INVALID_COUNTRY("Not allowed to register from given location."), 
 	INTERNAL_SERVER_ERROR("Unable to validate location.");
 
 	private final String message;

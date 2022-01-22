@@ -13,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.company.division.error.CustomerException;
@@ -72,6 +73,7 @@ public class CustomerServiceImpl {
 
 	/**
 	 * @param ipAdress
+	 * @return Customer IP information from ip-api {@link CustomerIpInfo}
 	 * @throws CustomerException 
 	 */
 	public CustomerIpInfo getCustomerIpInfo(String ipAdress) throws CustomerException {
@@ -86,8 +88,12 @@ public class CustomerServiceImpl {
 		      customerIpInfo =  restTemplate.exchange(url.concat(ipAdress), HttpMethod.GET, entity, CustomerIpInfo.class).getBody();
 		      log.info(" received data from ip-api : {}", customerIpInfo);
 		      
-		} catch(Exception ex){
-			log.error("Error Connecting to ip-api", ex);
+		} catch( RestClientException re){
+			log.error("Error Connecting to ip-api RestClientException : ", re);
+			throw new CustomerException(ErrorCode.INTERNAL_SERVER_ERROR.name(), ErrorCode.INTERNAL_SERVER_ERROR.getMessage() +" - " + re.getMessage());
+		}
+		catch(Exception ex){
+			log.error("Error Connecting to ip-api Exception : ", ex);
 			throw new CustomerException(ErrorCode.INTERNAL_SERVER_ERROR.name(), ErrorCode.INTERNAL_SERVER_ERROR.getMessage());
 		}
 		if(customerIpInfo == null || !"SUCCESS".equalsIgnoreCase(customerIpInfo.getStatus()) 
